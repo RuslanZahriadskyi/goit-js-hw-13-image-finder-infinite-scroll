@@ -1,15 +1,45 @@
 import refs from './refs';
 import cardsMarkup from './markup';
+import InfiniteScroll from 'infinite-scroll';
+import Masonry from 'masonry-layout';
+import imagesLoaded from 'imagesloaded';
 
-const Masonry = require('masonry-layout');
-const InfiniteScroll = require('infinite-scroll');
-const imagesLoaded = require('imagesloaded');
+// console.dir();
+
 // make imagesLoaded available for InfiniteScroll
 InfiniteScroll.imagesLoaded = imagesLoaded;
 
-function getQuery(searchQuery) {
+function clear() {
+  msnry.destroy();
+  infScroll.destroy();
+  refs.galleryRef.innerHTML = `
+        <div class="grid__col-sizer"></div>
+        <div class="grid__gutter-sizer"></div>`;
+  refs.galleryRef.style = '';
+  refs.pageLoadStatusRef.style = 'display: none';
+  refs.infiniteScrollLastRef.style = 'display: none';
+}
+
+let msnry = null;
+let infScroll = null;
+
+function getQuery(searchQuery, update = false) {
+  if (update & !(msnry === null) & !(infScroll === null)) {
+    clear();
+  }
+
+  // console.log(update);
+
+  const url = 'https://pixabay.com/api/';
+  const apiKey = '19598883-8e8293d515495519269109cc8';
+
+  const search = `https://obscure-citadel-20244.herokuapp.com/${url}?image_type=photo&q=${searchQuery}&per_page=12&key=${apiKey}`;
+  // console.log(search);
+
+  // init Isotope
+
   // init Masonry
-  const msnry = new Masonry('.grid', {
+  msnry = new Masonry('.grid', {
     itemSelector: '.grid-item',
     columnWidth: '.grid__col-sizer',
     gutter: '.grid__gutter-sizer',
@@ -20,13 +50,8 @@ function getQuery(searchQuery) {
     hiddenStyle: { transform: 'translateY(100px)', opacity: 0 },
   });
 
-  const url = 'https://pixabay.com/api/';
-  const apiKey = '19598883-8e8293d515495519269109cc8';
-
-  const search = `https://obscure-citadel-20244.herokuapp.com/${url}?image_type=photo&q=${searchQuery}&per_page=12&key=${apiKey}`;
-
   // now you can use outlayer option
-  const infScroll = new InfiniteScroll('.grid', {
+  infScroll = new InfiniteScroll('.grid', {
     // options...
     path: function () {
       return search + '&page=' + this.pageIndex;
@@ -34,33 +59,50 @@ function getQuery(searchQuery) {
     // load response as flat text
     responseType: 'text',
     outlayer: msnry,
+    loadOnScroll: false,
     status: '.page-load-status',
     history: false,
   });
 
   infScroll.on('load', function (response) {
-    const proxyElem = refs.galleryRef;
+    const proxyElem = document.createElement('div');
+
     // parse response into JSON data
     const data = JSON.parse(response);
     // console.log(data.hits);
+
     // compile data into HTML
     const markup = cardsMarkup(data.hits);
+
     // convert HTML string into elements
     proxyElem.insertAdjacentHTML('beforeend', markup);
     // console.log((proxyElem.insertAdjacentHTML = cardsMarkup(data.hits)));
+
     // append item elements
     const items = proxyElem.querySelectorAll('.grid-item');
-    // console.log(items);
+    // console.log(markup.length);
+    if (markup.length === 0) {
+      clear();
+    }
+
     // append item elements
     imagesLoaded(items, function () {
       infScroll.appendItems(items);
       msnry.appended(items);
+      refs.buttonViewMoreRef.style = 'display: block';
     });
-    // console.log(imagesLoaded(items, function () {
-    //   infScroll.appendItems(items);
-    //   msnry.appended(items);
-    // }))
   });
+
+  refs.buttonViewMoreRef.addEventListener('click', activaredInfScroll);
+
+  function activaredInfScroll() {
+    // load next page
+    infScroll.loadNextPage();
+    // enable loading on scroll
+    infScroll.options.loadOnScroll = true;
+    // hide page
+    refs.buttonViewMoreRef.style.display = 'none';
+  }
 
   // load initial page
   infScroll.loadNextPage();

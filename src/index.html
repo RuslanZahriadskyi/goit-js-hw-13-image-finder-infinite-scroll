@@ -8,17 +8,24 @@
   </head>
 
   <body>
-    <form class="search-form" id="search-form">
-      <input
-        class="input"
-        type="text"
-        name="query"
-        autocomplete="off"
-        placeholder="Search images..."
-      />
-    </form>
+    <div class="form__container">
+      <form class="search-form" id="search-form">
+        <span></span>
+        <span></span>
+        <span></span>
+        <span></span>
+        <input
+          class="input"
+          type="text"
+          name="query"
+          autocomplete="off"
+          placeholder="Search images..."
+        />
+      </form>
+    </div>
+
     <div class="grid gallery">
-      <div class=".grid__col-sizer"></div>
+      <div class="grid__col-sizer"></div>
       <div class="grid__gutter-sizer"></div>
     </div>
     <div class="page-load-status">
@@ -31,6 +38,12 @@
       <p class="infinite-scroll-last">End of content</p>
       <p class="infinite-scroll-error">No more pages to load</p>
     </div>
-    <div><button class="view-more-button">View more</button></div>
+    <div class="view-more-container">
+      <span></span>
+      <span></span>
+      <span></span>
+      <span></span>
+      <button class="view-more-button">View more</button>
+    </div>
   </body>
 </html>

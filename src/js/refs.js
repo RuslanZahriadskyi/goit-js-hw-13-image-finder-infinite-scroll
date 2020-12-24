@@ -1,7 +1,9 @@
 const refs = {
   formRef: document.getElementById('search-form'),
   galleryRef: document.querySelector('.gallery'),
-  buttonViewMore: document.querySelector('.view-more-button'),
+  buttonViewMoreRef: document.querySelector('.view-more-button'),
+  pageLoadStatusRef: document.querySelector('.page-load-status'),
+  infiniteScrollLastRef: document.querySelector('.infinite-scroll-last'),
 };
 
 export default refs;
