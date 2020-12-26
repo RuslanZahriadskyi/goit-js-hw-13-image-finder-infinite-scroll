@@ -7,7 +7,7 @@ import onImgClick from './js/getFullSizeImg';
 refs.formRef.addEventListener('submit', render);
 refs.galleryRef.addEventListener('click', onImgClick);
 
-async function render(e) {
+function render(e) {
   e.preventDefault();
 
   let searchQuery = e.target.elements.query.value;
@@ -15,8 +15,8 @@ async function render(e) {
 
   refs.inputRef.value = '';
   // console.log(searchQuery);
-  getQuery(searchQuery, true);
-  refs.buttonViewMoreRef.style.display = 'block';
+
+ getQuery(searchQuery, true);
 }
 
 refs.btnClickRef.addEventListener('click', function () {

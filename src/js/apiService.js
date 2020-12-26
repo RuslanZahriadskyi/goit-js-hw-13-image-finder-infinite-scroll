@@ -5,9 +5,6 @@ import Masonry from 'masonry-layout';
 import imagesLoaded from 'imagesloaded';
 import errorsNotifications from './notification';
 
-// console.log();
-
-// console.dir();
 
 // make imagesLoaded available for InfiniteScroll
 InfiniteScroll.imagesLoaded = imagesLoaded;
@@ -84,6 +81,7 @@ function getQuery(searchQuery, update = false) {
 
     // convert HTML string into elements
     proxyElem.insertAdjacentHTML('beforeend', markup);
+    // console.log(1)
     // console.log((proxyElem.insertAdjacentHTML = cardsMarkup(data.hits)));
 
     // append item elements
@@ -99,6 +97,10 @@ function getQuery(searchQuery, update = false) {
       // console.log(this.pageIndex);
       infScroll.appendItems(items);
       msnry.appended(items);
+      if(infScroll.pageIndex === 2) {
+        refs.buttonViewMoreRef.style.display = 'block';
+      }
+      // console.log(infScroll.pageIndex)
     });
   });
 
