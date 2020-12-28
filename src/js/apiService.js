@@ -5,7 +5,6 @@ import Masonry from 'masonry-layout';
 import imagesLoaded from 'imagesloaded';
 import errorsNotifications from './notification';
 
-
 // make imagesLoaded available for InfiniteScroll
 InfiniteScroll.imagesLoaded = imagesLoaded;
 
@@ -24,7 +23,7 @@ let msnry = null;
 let infScroll = null;
 
 function getQuery(searchQuery, update = false) {
-  if (update & !(msnry === null) & !(infScroll === null)) {
+  if (update && !(msnry === null) && !(infScroll === null)) {
     clear();
   }
 
@@ -97,7 +96,7 @@ function getQuery(searchQuery, update = false) {
       // console.log(this.pageIndex);
       infScroll.appendItems(items);
       msnry.appended(items);
-      if(infScroll.pageIndex === 2) {
+      if (infScroll.pageIndex === 2) {
         refs.buttonViewMoreRef.style.display = 'block';
       }
       // console.log(infScroll.pageIndex)
